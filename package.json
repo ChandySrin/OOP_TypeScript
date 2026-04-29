@@ -1,0 +1,33 @@
+{
+  "name": "oop_typescript",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/app.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ChandySrin/OOP_TypeScript.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  
+  "bugs": {
+    "url": "https://github.com/ChandySrin/OOP_TypeScript/issues"
+  },
+  "homepage": "https://github.com/ChandySrin/OOP_TypeScript#readme",
+  "dependencies": {
+    "express": "^5.2.1",
+    "mysql2": "^3.22.3",
+    "nodemon": "^3.1.14"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.6.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  }
+}
