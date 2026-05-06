@@ -1,3 +1,4 @@
+import { ResultSetHeader } from "mysql2";
 import db from "../config/db";
 
 export default class User {

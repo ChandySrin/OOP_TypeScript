@@ -21,12 +21,16 @@ export default class UserService {
   static async updateUser(id: RouteId, payload: UserPayload) {
     const userId = this.validateId(id);
     const { name, email } = this.validateUserPayload(payload);
-    return User.update(userId, name, email);
+    const result = await User.update(userId, name, email);
+
+    return result;
   }
 
   static async deleteUser(id: RouteId) {
     const userId = this.validateId(id);
-    return User.delete(userId);
+    const result = await User.delete(userId);
+
+    return result;
   }
 
   private static validateId(id: RouteId): string {

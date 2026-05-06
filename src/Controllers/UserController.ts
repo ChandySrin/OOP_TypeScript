@@ -1,41 +1,34 @@
-import express from "express";
+import { Request, Response } from "express";
 import BaseController from "./baseController";
 import UserService from "../Services/UserService";
 
 export default class UserController extends BaseController {
-   static async getAllUsers(req: express.Request, res: express.Response) {
-        try {
-            const users = await UserService.getAllUsers();
-            UserController.success(res, users);
-        } catch (error) {
-            UserController.error(res, error, "Failed to fetch users");
-        }
-    }
-    static async createUser(req: express.Request, res: express.Response) {
-        try {
-            await UserService.createUser(req.body);
-            
-            UserController.success(res, { message: "User created successfully" }, 201);
-        } catch (error) {
-            UserController.error(res, error, "Failed to create user");
-        }
-    }
 
-    static async updateUser(req: express.Request, res: express.Response) {
-        try {
-            await UserService.updateUser(req.params.id, req.body);
-            UserController.success(res, { message: "User updated successfully" });
-        } catch (error) {
-            UserController.error(res, error, "Failed to update user");
-        }
-    }
+  async getAllUsers(req: Request, res: Response) {
+    await this.handleAsyncError(res, async () => {
+      const users = await UserService.getAllUsers();
+      this.sendSuccess(res, users);
+    });
+  }
 
-    static async deleteUser(req: express.Request, res: express.Response) {
-        try {
-            await UserService.deleteUser(req.params.id);
-            UserController.success(res, { message: "User deleted successfully" });
-        } catch (error) {
-            UserController.error(res, error, "Failed to delete user");
-        }
-    }
-}       
+  async createUser(req: Request, res: Response) {
+    await this.handleAsyncError(res, async () => {
+      await UserService.createUser(req.body);
+      this.sendSuccess(res, { message: "User created successfully" }, 201);
+    });
+  }
+
+  async updateUser(req: Request, res: Response) {
+    await this.handleAsyncError(res, async () => {
+      await UserService.updateUser(req.params.id, req.body);
+      this.sendSuccess(res, { message: "User updated successfully" });
+    });
+  }
+
+  async deleteUser(req: Request, res: Response) {
+    await this.handleAsyncError(res, async () => {
+      await UserService.deleteUser(req.params.id);
+      this.sendSuccess(res, { message: "User deleted successfully" });
+    });
+  }
+}

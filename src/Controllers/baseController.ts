@@ -2,24 +2,44 @@ import { Response } from "express";
 import AppError from "../utils/error";
 
 export default class BaseController {
-  protected static success(
+  protected sendSuccess(
     res: Response,
-    data: unknown,
+    data: any,
     statusCode = 200
   ): void {
-    res.status(statusCode).json(data);
+    res.status(statusCode).json({
+      success: true,
+      data
+    });
   }
 
-  protected static error(
+  protected sendError(
     res: Response,
-    error: unknown,
-    fallbackMessage = "Internal server error"
+    error: string,
+    statusCode = 500
   ): void {
-    if (error instanceof AppError) {
-      res.status(error.statusCode).json({ error: error.message });
-      return;
-    }
+    res.status(statusCode).json({ 
+      success: false,
+      error
+     });
+  }
+  protected async handleAsyncError(
+    res: Response,
+    asyncMethod: () => Promise<any>,
+  ): Promise<void> {
+    try {
+      await asyncMethod();
+    } catch (error) {
+      if (error instanceof AppError) {
+        this.sendError(res, error.message, error.statusCode);
+        return;
+      }
 
-    res.status(500).json({ error: fallbackMessage });
+      if (error instanceof Error) {
+        this.sendError(res, error.message, 500);
+      }else {
+        this.sendError(res, "Internal server error", 500);
+      }
+    }
   }
 }
