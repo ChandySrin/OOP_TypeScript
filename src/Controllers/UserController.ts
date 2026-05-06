@@ -1,44 +1,41 @@
 import express from "express";
-import User from "../Models/User";
+import BaseController from "./baseController";
+import UserService from "../Services/UserService";
 
-export default class UserController {
+export default class UserController extends BaseController {
    static async getAllUsers(req: express.Request, res: express.Response) {
         try {
-            const users = await User.getAllUsers();
-            res.json(users);
+            const users = await UserService.getAllUsers();
+            UserController.success(res, users);
         } catch (error) {
-            res.status(500).json({ error: "Failed to fetch users" });
+            UserController.error(res, error, "Failed to fetch users");
         }
     }
     static async createUser(req: express.Request, res: express.Response) {
         try {
-            const { name, email } = req.body;
-            await User.create(name, email);
+            await UserService.createUser(req.body);
             
-            res.status(201).json({ message: "User created successfully" });
+            UserController.success(res, { message: "User created successfully" }, 201);
         } catch (error) {
-            res.status(500).json({ error: "Failed to create user" });
+            UserController.error(res, error, "Failed to create user");
         }
     }
 
     static async updateUser(req: express.Request, res: express.Response) {
         try {
-            const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-            const { name, email } = req.body;
-            await User.update(id, name, email);
-            res.json({ message: "User updated successfully" });
+            await UserService.updateUser(req.params.id, req.body);
+            UserController.success(res, { message: "User updated successfully" });
         } catch (error) {
-            res.status(500).json({ error: "Failed to update user" });
+            UserController.error(res, error, "Failed to update user");
         }
     }
 
     static async deleteUser(req: express.Request, res: express.Response) {
         try {
-            const id = Array.isArray(req.params.id) ? req.params.id[0] : req.params.id;
-            await User.delete(id);
-            res.json({ message: "User deleted successfully" });
+            await UserService.deleteUser(req.params.id);
+            UserController.success(res, { message: "User deleted successfully" });
         } catch (error) {
-            res.status(500).json({ error: "Failed to delete user" });
+            UserController.error(res, error, "Failed to delete user");
         }
     }
 }       

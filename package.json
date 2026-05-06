@@ -14,7 +14,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  
   "bugs": {
     "url": "https://github.com/ChandySrin/OOP_TypeScript/issues"
   },
@@ -29,5 +28,6 @@
     "@types/node": "^25.6.0",
     "ts-node": "^10.9.2",
     "typescript": "^6.0.3"
-  }
+  },
+  "type": "commonjs"
 }
